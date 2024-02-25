@@ -1,3 +1,5 @@
+use std::{str::FromStr, string::ParseError};
+
 use bpm::{Bpm, BpmDef};
 use met::Met;
 use note::NoteType;
@@ -7,6 +9,62 @@ pub mod bpm;
 pub mod met;
 pub mod note;
 pub mod sfl;
+
+pub enum ParserContext {
+    None,
+    Version,
+    Music,
+    SequenceId,
+    Difficult,
+    Level,
+    Creator,
+    BpmDef,
+    MetDef,
+    Resolution,
+    ClkDef,
+    ProgJudgeBpm,
+    ProgJudgeAer,
+    Tutorial,
+    Bpm,
+    Met,
+    Note,
+}
+
+impl FromStr for ParserContext {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let result = match s {
+            "VERSION" => Self::Version,
+            "MUSIC" => Self::Music,
+            "SEQUENCEID" => Self::SequenceId,
+            "DIFFICULT" => Self::Difficult,
+            "LEVEL" => Self::Level,
+            "CREATOR" => Self::Creator,
+            "BPM_DEF" => Self::BpmDef,
+            "MET_DEF" => Self::MetDef,
+            "RESOLUTION" => Self::Resolution,
+            "CLK_DEF" => Self::ClkDef,
+            "PROGJUDGE_BPM" => Self::ProgJudgeBpm,
+            "PROGJUDGE_AER" => Self::ProgJudgeAer,
+            "TUTORIAL" => Self::Tutorial,
+            "BPM" => Self::Bpm,
+            "MET" => Self::Met,
+            "TAP" | "CHR" | "HLD" | "SLD" | "SLC" | "FLK" | "AIR" | "AUR" | "AUL" | "AHD"
+            | "ADW" | "ADR" | "ADL" | "MNE" => Self::Note,
+            _ => Self::None,
+        };
+
+        Ok(result)
+    }
+}
+
+impl ParserContext {
+    pub fn get_section(line: &str) -> Self {
+        let context = line.split('\t').nth(0);
+        Self::from_str(context.unwrap()).unwrap()
+    }
+}
 
 #[derive(Default, Debug, PartialEq)]
 pub struct ChuniChart {
