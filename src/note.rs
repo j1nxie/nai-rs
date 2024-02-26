@@ -7,7 +7,7 @@ pub struct Tap {
 }
 
 #[derive(Debug, Default, PartialEq)]
-pub struct ExNote {
+pub struct ExTap {
     pub measure: usize,
     pub offset: usize,
     pub cell: usize,
@@ -76,7 +76,7 @@ pub type Mine = Tap;
 #[derive(Debug, PartialEq)]
 pub enum NoteType {
     Tap(Tap),
-    ExNote(ExNote),
+    ExTap(ExTap),
     Hold(Hold),
     Slide(Slide),
     SlideControlPoint(SlideControlPoint),
