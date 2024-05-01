@@ -22,6 +22,7 @@ pub struct Hold {
     pub cell: usize,
     pub width: usize,
     pub duration: usize,
+    pub animation: Option<String>,
 }
 
 #[derive(Debug, Default, PartialEq)]
@@ -33,6 +34,7 @@ pub struct Slide {
     pub duration: usize,
     pub end_cell: usize,
     pub end_width: usize,
+    pub animation: Option<String>,
 }
 
 pub type SlideControlPoint = Slide;
@@ -52,7 +54,7 @@ pub struct Air {
     pub offset: usize,
     pub cell: usize,
     pub width: usize,
-    pub target_note: usize,
+    pub target_note: String,
 }
 
 pub type AirUpRight = Air;
@@ -67,7 +69,7 @@ pub struct AirHold {
     pub offset: usize,
     pub cell: usize,
     pub width: usize,
-    pub target_note: usize,
+    pub target_note: String,
     pub duration: usize,
 }
 
