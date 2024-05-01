@@ -25,6 +25,8 @@ pub struct Hold {
     pub animation: Option<String>,
 }
 
+pub type HoldWithExTapHead = Hold;
+
 #[derive(Debug, Default, PartialEq)]
 pub struct Slide {
     pub measure: usize,
@@ -100,11 +102,14 @@ pub struct AirSlide {
     pub width: usize,
     pub target_note: String,
     pub starting_height: f64,
+    pub duration: usize,
     pub end_cell: usize,
     pub end_width: usize,
     pub target_height: f64,
     pub color: String,
 }
+
+pub type AirSlideControlPoint = AirSlide;
 
 pub type Mine = Tap;
 
@@ -113,6 +118,7 @@ pub enum NoteType {
     Tap(Tap),
     ExTap(ExTap),
     Hold(Hold),
+    HoldWithExTapHead(HoldWithExTapHead),
     Slide(Slide),
     SlideControlPoint(SlideControlPoint),
     SlideWithExTapHead(SlideWithExTapHead),
@@ -126,5 +132,7 @@ pub enum NoteType {
     AirDownRight(AirDownRight),
     AirDownLeft(AirDownLeft),
     AirCrush(AirCrush),
+    AirSlide(AirSlide),
+    AirSlideControlPoint(AirSlideControlPoint),
     Mine(Mine),
 }
