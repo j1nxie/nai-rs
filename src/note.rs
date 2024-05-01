@@ -12,7 +12,7 @@ pub struct ExTap {
     pub offset: usize,
     pub cell: usize,
     pub width: usize,
-    pub unknown: String,
+    pub animation: String,
 }
 
 #[derive(Debug, Default, PartialEq)]
