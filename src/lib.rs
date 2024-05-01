@@ -50,8 +50,8 @@ impl FromStr for ParserContext {
             "TUTORIAL" => Self::Tutorial,
             "BPM" => Self::Bpm,
             "MET" => Self::Met,
-            "TAP" | "CHR" | "HLD" | "SLD" | "SLC" | "FLK" | "AIR" | "AUR" | "AUL" | "AHD"
-            | "ADW" | "ADR" | "ADL" | "MNE" => Self::Note,
+            "TAP" | "CHR" | "HLD" | "HXD" | "SLD" | "SLC" | "SXC" | "FLK" | "AIR" | "AUR"
+            | "AUL" | "AHD" | "ADW" | "ADR" | "ADL" | "ALD" | "MNE" => Self::Note,
             _ => Self::None,
         };
 

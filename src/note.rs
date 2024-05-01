@@ -38,6 +38,8 @@ pub struct Slide {
 }
 
 pub type SlideControlPoint = Slide;
+pub type SlideWithExTapHead = Slide;
+pub type SlideControlPointWithExTapHead = Slide;
 
 #[derive(Debug, Default, PartialEq)]
 pub struct Flick {
@@ -73,6 +75,37 @@ pub struct AirHold {
     pub duration: usize,
 }
 
+#[derive(Debug, Default, PartialEq)]
+pub struct AirTrace {
+    pub measure: usize,
+    pub offset: usize,
+    pub cell: usize,
+    pub width: usize,
+    pub unknown: usize,
+    pub starting_height: f64,
+    pub duration: usize,
+    pub end_cell: usize,
+    pub end_width: usize,
+    pub target_height: f64,
+    pub color: String,
+}
+
+pub type AirCrush = AirTrace;
+
+#[derive(Debug, Default, PartialEq)]
+pub struct AirSlide {
+    pub measure: usize,
+    pub offset: usize,
+    pub cell: usize,
+    pub width: usize,
+    pub target_note: String,
+    pub starting_height: f64,
+    pub end_cell: usize,
+    pub end_width: usize,
+    pub target_height: f64,
+    pub color: String,
+}
+
 pub type Mine = Tap;
 
 #[derive(Debug, PartialEq)]
@@ -82,6 +115,8 @@ pub enum NoteType {
     Hold(Hold),
     Slide(Slide),
     SlideControlPoint(SlideControlPoint),
+    SlideWithExTapHead(SlideWithExTapHead),
+    SlideControlPointWithExTapHead(SlideControlPointWithExTapHead),
     Flick(Flick),
     Air(Air),
     AirUpRight(AirUpRight),
@@ -90,5 +125,6 @@ pub enum NoteType {
     AirDown(AirDown),
     AirDownRight(AirDownRight),
     AirDownLeft(AirDownLeft),
+    AirCrush(AirCrush),
     Mine(Mine),
 }
