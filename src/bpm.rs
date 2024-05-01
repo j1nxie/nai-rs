@@ -1,9 +1,9 @@
 #[derive(Debug, Default, PartialEq)]
 pub struct BpmDef {
-    pub default_bpm: f64,
-    pub alternate_bpm: f64,
-    pub slot_3: f64,
-    pub slot_4: f64,
+    pub starting_bpm: f64,
+    pub mode: f64,
+    pub highest_bpm: f64,
+    pub lowest_bpm: f64,
 }
 
 #[derive(Debug, Default, PartialEq)]
