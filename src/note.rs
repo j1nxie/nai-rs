@@ -1,3 +1,5 @@
+use std::{str::FromStr, string::ParseError};
+
 #[derive(Debug, Default, PartialEq)]
 pub struct Tap {
     pub measure: usize,
@@ -137,214 +139,220 @@ pub enum NoteType {
     Mine(Mine),
 }
 
-pub fn parse_note(line: &str) -> NoteType {
-    let (note_type, data) = line.trim().split_once('\t').unwrap();
+impl FromStr for NoteType {
+    type Err = ParseError;
 
-    let mut data = data.trim().split('\t');
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let (note_type, data) = s.trim().split_once('\t').unwrap();
 
-    let measure = data.next().unwrap().parse::<usize>().unwrap();
-    let offset = data.next().unwrap().parse::<usize>().unwrap();
-    let cell = data.next().unwrap().parse::<usize>().unwrap();
-    let width = data.next().unwrap().parse::<usize>().unwrap();
+        let mut data = data.trim().split('\t');
 
-    match note_type {
-        "TAP" => NoteType::Tap(Tap {
-            measure,
-            offset,
-            cell,
-            width,
-        }),
+        let measure = data.next().unwrap().parse::<usize>().unwrap();
+        let offset = data.next().unwrap().parse::<usize>().unwrap();
+        let cell = data.next().unwrap().parse::<usize>().unwrap();
+        let width = data.next().unwrap().parse::<usize>().unwrap();
 
-        "CHR" => NoteType::ExTap(ExTap {
-            measure,
-            offset,
-            cell,
-            width,
-            animation: data.next().unwrap().to_owned(),
-        }),
+        let note = match note_type {
+            "TAP" => NoteType::Tap(Tap {
+                measure,
+                offset,
+                cell,
+                width,
+            }),
 
-        "HLD" => NoteType::Hold(Hold {
-            measure,
-            offset,
-            cell,
-            width,
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            animation: data.next().map(|x| x.to_string()),
-        }),
+            "CHR" => NoteType::ExTap(ExTap {
+                measure,
+                offset,
+                cell,
+                width,
+                animation: data.next().unwrap().to_owned(),
+            }),
 
-        "HXD" => NoteType::HoldWithExTapHead(HoldWithExTapHead {
-            measure,
-            offset,
-            cell,
-            width,
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            animation: data.next().map(|x| x.to_string()),
-        }),
+            "HLD" => NoteType::Hold(Hold {
+                measure,
+                offset,
+                cell,
+                width,
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                animation: data.next().map(|x| x.to_string()),
+            }),
 
-        "SLD" => NoteType::Slide(Slide {
-            measure,
-            offset,
-            cell,
-            width,
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            end_cell: data.next().unwrap().parse::<usize>().unwrap(),
-            end_width: data.next().unwrap().parse::<usize>().unwrap(),
-            animation: data.nth(1).map(|x| x.to_string()),
-        }),
+            "HXD" => NoteType::HoldWithExTapHead(HoldWithExTapHead {
+                measure,
+                offset,
+                cell,
+                width,
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                animation: data.next().map(|x| x.to_string()),
+            }),
 
-        "SLC" => NoteType::SlideControlPoint(SlideControlPoint {
-            measure,
-            offset,
-            cell,
-            width,
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            end_cell: data.next().unwrap().parse::<usize>().unwrap(),
-            end_width: data.next().unwrap().parse::<usize>().unwrap(),
-            animation: data.nth(1).map(|x| x.to_string()),
-        }),
+            "SLD" => NoteType::Slide(Slide {
+                measure,
+                offset,
+                cell,
+                width,
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                end_cell: data.next().unwrap().parse::<usize>().unwrap(),
+                end_width: data.next().unwrap().parse::<usize>().unwrap(),
+                animation: data.nth(1).map(|x| x.to_string()),
+            }),
 
-        "SXD" => NoteType::SlideWithExTapHead(SlideWithExTapHead {
-            measure,
-            offset,
-            cell,
-            width,
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            end_cell: data.next().unwrap().parse::<usize>().unwrap(),
-            end_width: data.next().unwrap().parse::<usize>().unwrap(),
-            animation: data.nth(1).map(|x| x.to_string()),
-        }),
+            "SLC" => NoteType::SlideControlPoint(SlideControlPoint {
+                measure,
+                offset,
+                cell,
+                width,
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                end_cell: data.next().unwrap().parse::<usize>().unwrap(),
+                end_width: data.next().unwrap().parse::<usize>().unwrap(),
+                animation: data.nth(1).map(|x| x.to_string()),
+            }),
 
-        "SXC" => NoteType::SlideControlPointWithExTapHead(SlideControlPointWithExTapHead {
-            measure,
-            offset,
-            cell,
-            width,
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            end_cell: data.next().unwrap().parse::<usize>().unwrap(),
-            end_width: data.next().unwrap().parse::<usize>().unwrap(),
-            animation: data.nth(1).map(|x| x.to_string()),
-        }),
+            "SXD" => NoteType::SlideWithExTapHead(SlideWithExTapHead {
+                measure,
+                offset,
+                cell,
+                width,
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                end_cell: data.next().unwrap().parse::<usize>().unwrap(),
+                end_width: data.next().unwrap().parse::<usize>().unwrap(),
+                animation: data.nth(1).map(|x| x.to_string()),
+            }),
 
-        "FLK" => NoteType::Flick(Flick {
-            measure,
-            offset,
-            cell,
-            width,
-            unknown: data.next().unwrap().to_string(),
-        }),
+            "SXC" => NoteType::SlideControlPointWithExTapHead(SlideControlPointWithExTapHead {
+                measure,
+                offset,
+                cell,
+                width,
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                end_cell: data.next().unwrap().parse::<usize>().unwrap(),
+                end_width: data.next().unwrap().parse::<usize>().unwrap(),
+                animation: data.nth(1).map(|x| x.to_string()),
+            }),
 
-        "AIR" => NoteType::Air(Air {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-        }),
+            "FLK" => NoteType::Flick(Flick {
+                measure,
+                offset,
+                cell,
+                width,
+                unknown: data.next().unwrap().to_string(),
+            }),
 
-        "AUL" => NoteType::AirUpLeft(AirUpLeft {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-        }),
+            "AIR" => NoteType::Air(Air {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+            }),
 
-        "AUR" => NoteType::AirUpRight(AirUpRight {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-        }),
+            "AUL" => NoteType::AirUpLeft(AirUpLeft {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+            }),
 
-        "AHD" => NoteType::AirHold(AirHold {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-        }),
+            "AUR" => NoteType::AirUpRight(AirUpRight {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+            }),
 
-        "ADW" => NoteType::AirDown(AirDown {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-        }),
+            "AHD" => NoteType::AirHold(AirHold {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+            }),
 
-        "ADL" => NoteType::AirDownLeft(AirDownLeft {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-        }),
+            "ADW" => NoteType::AirDown(AirDown {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+            }),
 
-        "ADR" => NoteType::AirDownRight(AirDownRight {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-        }),
+            "ADL" => NoteType::AirDownLeft(AirDownLeft {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+            }),
 
-        "ALD" => NoteType::AirCrush(AirCrush {
-            measure,
-            offset,
-            cell,
-            width,
-            unknown: data.next().unwrap().parse::<usize>().unwrap(),
-            starting_height: data.next().unwrap().parse::<f64>().unwrap(),
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            end_cell: data.next().unwrap().parse::<usize>().unwrap(),
-            end_width: data.next().unwrap().parse::<usize>().unwrap(),
-            target_height: data.next().unwrap().parse::<f64>().unwrap(),
-            color: if let Some(t) = data.next() {
-                match t {
-                    "GRY" | "RED" | "ORN" | "YEL" | "AQA" | "PPL" | "PNK" | "CYN" | "BLK"
-                    | "YEL" | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
-                    _ => unreachable!(
-                        "invalid color found while parsing air trace / air crush. bailing."
-                    ),
-                }
-            } else {
-                unreachable!("cannot parse color for air trace / air crush. bailing.")
-            },
-        }),
+            "ADR" => NoteType::AirDownRight(AirDownRight {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+            }),
 
-        "ASD" => NoteType::AirSlide(AirSlide {
-            measure,
-            offset,
-            cell,
-            width,
-            target_note: data.next().unwrap().to_string(),
-            starting_height: data.next().unwrap().parse::<f64>().unwrap(),
-            duration: data.next().unwrap().parse::<usize>().unwrap(),
-            end_cell: data.next().unwrap().parse::<usize>().unwrap(),
-            end_width: data.next().unwrap().parse::<usize>().unwrap(),
-            target_height: data.next().unwrap().parse::<f64>().unwrap(),
-            color: if let Some(t) = data.next() {
-                match t {
-                    "GRY" | "RED" | "ORN" | "YEL" | "AQA" | "PPL" | "PNK" | "CYN" | "BLK"
-                    | "YEL" | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
-                    _ => unreachable!(
-                        "invalid color found while parsing air trace / air crush. bailing."
-                    ),
-                }
-            } else {
-                unreachable!("cannot parse color for air trace / air crush. bailing.")
-            },
-        }),
+            "ALD" => NoteType::AirCrush(AirCrush {
+                measure,
+                offset,
+                cell,
+                width,
+                unknown: data.next().unwrap().parse::<usize>().unwrap(),
+                starting_height: data.next().unwrap().parse::<f64>().unwrap(),
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                end_cell: data.next().unwrap().parse::<usize>().unwrap(),
+                end_width: data.next().unwrap().parse::<usize>().unwrap(),
+                target_height: data.next().unwrap().parse::<f64>().unwrap(),
+                color: if let Some(t) = data.next() {
+                    match t {
+                        "GRY" | "RED" | "ORN" | "YEL" | "AQA" | "PPL" | "PNK" | "CYN" | "BLK"
+                        | "YEL" | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
+                        _ => unreachable!(
+                            "invalid color found while parsing air trace / air crush. bailing."
+                        ),
+                    }
+                } else {
+                    unreachable!("cannot parse color for air trace / air crush. bailing.")
+                },
+            }),
 
-        "MNE" => NoteType::Mine(Mine {
-            measure,
-            offset,
-            cell,
-            width,
-        }),
+            "ASD" => NoteType::AirSlide(AirSlide {
+                measure,
+                offset,
+                cell,
+                width,
+                target_note: data.next().unwrap().to_string(),
+                starting_height: data.next().unwrap().parse::<f64>().unwrap(),
+                duration: data.next().unwrap().parse::<usize>().unwrap(),
+                end_cell: data.next().unwrap().parse::<usize>().unwrap(),
+                end_width: data.next().unwrap().parse::<usize>().unwrap(),
+                target_height: data.next().unwrap().parse::<f64>().unwrap(),
+                color: if let Some(t) = data.next() {
+                    match t {
+                        "GRY" | "RED" | "ORN" | "YEL" | "AQA" | "PPL" | "PNK" | "CYN" | "BLK"
+                        | "YEL" | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
+                        _ => unreachable!(
+                            "invalid color found while parsing air trace / air crush. bailing."
+                        ),
+                    }
+                } else {
+                    unreachable!("cannot parse color for air trace / air crush. bailing.")
+                },
+            }),
 
-        _ => unreachable!("something broke. bailing."),
+            "MNE" => NoteType::Mine(Mine {
+                measure,
+                offset,
+                cell,
+                width,
+            }),
+
+            _ => unreachable!("something broke. bailing."),
+        };
+
+        Ok(note)
     }
 }
