@@ -74,7 +74,7 @@ pub struct ChuniChart {
     pub music: usize,
     pub sequence_id: usize,
     pub difficult: usize,
-    pub level: usize,
+    pub level: f64,
     pub creator: String,
     pub bpm_def: BpmDef,
     pub resolution: usize,
