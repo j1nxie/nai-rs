@@ -1,7 +1,7 @@
 use std::{str::FromStr, string::ParseError};
 
 use bpm::{Bpm, BpmDef};
-use met::Met;
+use met::{Met, MetDef};
 use note::NoteType;
 use sfl::Sfl;
 
@@ -77,6 +77,7 @@ pub struct ChuniChart {
     pub level: f64,
     pub creator: String,
     pub bpm_def: BpmDef,
+    pub met_def: MetDef,
     pub resolution: usize,
     pub clk_def: usize,
     pub progjudge_bpm: f64,
