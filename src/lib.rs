@@ -216,8 +216,6 @@ impl ChuniChart {
                     }
 
                     ParserContext::None => continue,
-
-                    _ => unreachable!(),
                 }
             }
         }
