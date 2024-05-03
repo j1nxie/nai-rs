@@ -12,7 +12,8 @@ impl FromStr for BpmDef {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut data = s.trim().split('\t');
+        let (_, data) = s.trim().split_once('\t').unwrap();
+        let mut data = data.trim().split('\t');
 
         let starting_bpm = data.next().unwrap().parse::<f64>().unwrap();
         let mode = data.next().unwrap().parse::<f64>().unwrap();
@@ -39,7 +40,8 @@ impl FromStr for Bpm {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut data = s.trim().split('\t');
+        let (_, data) = s.trim().split_once('\t').unwrap();
+        let mut data = data.trim().split('\t');
 
         let beginning_measure = data.next().unwrap().parse::<usize>().unwrap();
         let offset = data.next().unwrap().parse::<usize>().unwrap();
