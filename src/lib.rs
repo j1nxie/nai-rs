@@ -79,7 +79,7 @@ pub struct ChuniChart {
     pub bpm_def: BpmDef,
     pub resolution: usize,
     pub clk_def: usize,
-    pub progjudge_bpm: usize,
+    pub progjudge_bpm: f64,
     pub progjudge_aer: f64,
     pub tutorial: bool,
     pub bpm: Vec<Bpm>,
