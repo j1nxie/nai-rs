@@ -5,6 +5,7 @@ a simple CHUNITHM chart (`.c2s`) parser.
 ## features
 
 - [x] parse for chart from `.c2s` file
+- [ ] handle different versions of charts (if there are any semantics differences between them)
 - [ ] figure out which ground note an air note is leeching from
 - [ ] convert to/from umiguri chart format
 
