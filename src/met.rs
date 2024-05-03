@@ -1,5 +1,8 @@
 use std::{str::FromStr, string::ParseError};
 
+// TODO: figure out the order of the first_value and second_value. unsure
+// whether they're the same as MET where the second_value comes first or
+// not.
 #[derive(Debug, Default, PartialEq)]
 pub struct MetDef {
     pub first_value: usize,

@@ -1,10 +1,15 @@
 use std::{str::FromStr, string::ParseError};
 
+/// Default BPM designation for the chart.
 #[derive(Debug, Default, PartialEq)]
 pub struct BpmDef {
+    /// The starting BPM of the chart.
     pub starting_bpm: f64,
+    /// Unknown meaning.
     pub mode: f64,
+    /// The highest BPM the chart uses.
     pub highest_bpm: f64,
+    /// The lowest BPM the chart uses.
     pub lowest_bpm: f64,
 }
 
@@ -29,10 +34,15 @@ impl FromStr for BpmDef {
     }
 }
 
+/// BPM designation for a specified measure in the chart.
 #[derive(Debug, Default, PartialEq)]
 pub struct Bpm {
+    /// The starting measure of the designation.
     pub beginning_measure: usize,
+    /// The offset of the designation. This is calculated in the same method
+    /// as described in [`ChuniChart`][crate::ChuniChart]'s `resolution` field.
     pub offset: usize,
+    /// The designated BPM.
     pub bpm: f64,
 }
 

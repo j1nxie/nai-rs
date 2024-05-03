@@ -68,28 +68,59 @@ impl ParserContext {
     }
 }
 
+/// Representation of a CHUNITHM chart.
 #[derive(Default, Debug, PartialEq)]
 pub struct ChuniChart {
+    /// The version of the chart format. `1.12.00` is the latest version as of
+    /// current (CHUNITHM LUMINOUS).
     pub version: String,
+    /// The ID for the music track. Usually set to 0, as `Music.xml` now contains
+    /// it.
     pub music: usize,
+    /// The sequence ID of the chart. Usually set to 0.
     pub sequence_id: usize,
+    /// The difficulty of the chart. Usually set to 00, as `Music.xml` now
+    /// contains it.
     pub difficult: usize,
+    /// The internal level of the chart. Usually set to 0.0, as `Music.xml` now
+    /// contains it.
     pub level: f64,
+    /// The creator of the chart file. This will display on the bottom left
+    /// corner of the song card, unless the difficulty is BASIC or ADVANCED.
     pub creator: String,
+    /// The default BPM for the chart.
     pub bpm_def: BpmDef,
+    /// The default metronome for the chart.
     pub met_def: MetDef,
+    /// The resolution of the chart. This represents the length of a measure,
+    /// and it is also used in calculating offset in various other places.
+    /// Considering a 4/4 metronome, given the default resolution of 384,
+    /// the first beat of the measure would have offset 0, the second would be
+    /// 96, and so on.
     pub resolution: usize,
+    /// Unknown meaning. Always set to 384.
     pub clk_def: usize,
+    /// Unknown meaning. Always set to 240.000.
     pub progjudge_bpm: f64,
+    /// Unknown meaning. Always set to 0.999.
     pub progjudge_aer: f64,
+    /// Designates whether or not the track is a tutorial track.
     pub tutorial: bool,
+    /// All BPM designations in the chart.
     pub bpm: Vec<Bpm>,
+    /// All time signature designations in the chart.
     pub met: Vec<Met>,
+    /// All playfield speed designations in the chart.
     pub sfl: Vec<Sfl>,
+    /// All notes in the chart.
     pub notes: Vec<NoteType>,
 }
 
 impl ChuniChart {
+    /// Takes a [`String`] and parses it into a [`ChuniChart`].
+    ///
+    /// Returns a [`ParseError`] if any step during
+    /// parsing fails.
     pub fn parse(input: String) -> Result<ChuniChart, ParseError> {
         let mut chart = ChuniChart::default();
         let mut current_section: ParserContext;
