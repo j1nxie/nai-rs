@@ -68,7 +68,8 @@ impl ParserContext {
     }
 }
 
-/// Representation of a CHUNITHM chart.
+/// Representation of a CHUNITHM chart. Ending tags are ignored right now
+/// as they do not seem to influence the functionality of the chart.
 #[derive(Default, Debug, PartialEq)]
 pub struct ChuniChart {
     /// The version of the chart format. `1.12.00` is the latest version as of
