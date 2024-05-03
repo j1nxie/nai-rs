@@ -27,6 +27,7 @@ pub enum ParserContext {
     Tutorial,
     Bpm,
     Met,
+    Sfl,
     Note,
 }
 
@@ -50,6 +51,7 @@ impl FromStr for ParserContext {
             "TUTORIAL" => Self::Tutorial,
             "BPM" => Self::Bpm,
             "MET" => Self::Met,
+            "SFL" => Self::Sfl,
             "TAP" | "CHR" | "HLD" | "HXD" | "SLD" | "SLC" | "SXC" | "FLK" | "AIR" | "AUR"
             | "AUL" | "AHD" | "ADW" | "ADR" | "ADL" | "ALD" | "MNE" => Self::Note,
             _ => Self::None,
@@ -80,8 +82,8 @@ pub struct ChuniChart {
     pub progjudge_bpm: usize,
     pub progjudge_aer: f64,
     pub tutorial: bool,
-    pub bpm: Bpm,
-    pub met: Met,
-    pub sfl: Sfl,
+    pub bpm: Vec<Bpm>,
+    pub met: Vec<Met>,
+    pub sfl: Vec<Sfl>,
     pub notes: Vec<NoteType>,
 }
