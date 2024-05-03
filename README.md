@@ -2,6 +2,12 @@
 
 a simple CHUNITHM chart (`.c2s`) parser.
 
+## features
+
+- [x] parse for chart from `.c2s` file
+- [ ] figure out which ground note an air note is leeching from
+- [ ] convert to/from umiguri chart format
+
 ## acknowledgements
 
 this would not have been possible without Suprnova's [Chunithm-Research](https://github.com/Suprnova/Chunithm-Research/) repository for initial information on the chart format, and beerpsi's [fork](https://github.com/beerpiss/Chunithm-Research) for updated information up to LUMINOUS.
