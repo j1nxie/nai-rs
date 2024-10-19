@@ -71,6 +71,7 @@ pub struct Hold {
     /// same calculation method as offset values.
     pub duration: usize,
     /// The animation that is played when a HoldWithExTapHead is hit. Possible values are:
+    ///
     /// - UP: Vertical effects from bottom to top.
     /// - DW: Vertical effects from top to bottom.
     /// - CE: Effects towards the playfield.
@@ -92,7 +93,7 @@ pub struct Slide {
     /// The specific measure the note will be placed in.
     pub measure: usize,
     /// The offset of the note from the start of the specified measure.
-    /// calculated with the method described in [`ChuniChart`][crate::ChuniChart]'s `resolution` field.
+    /// Calculated with the method described in [`ChuniChart`][crate::ChuniChart]'s `resolution` field.
     pub offset: usize,
     /// The numerical ID for the column in the playfield that the note should
     /// appear in, ranging between 0-15, with 0 being the leftmost column, and
@@ -102,9 +103,24 @@ pub struct Slide {
     /// minimum value is 1, which means that the note only occupies the column
     /// specified.
     pub width: usize,
+    /// The amount of time that the note will take to move to the target cell.
+    /// Calculated with the method described in [`ChuniChart`][crate::ChuniChart]'s `resolution` field.
     pub duration: usize,
+    /// The column that the slide will move towards over the duration of the slide.
     pub end_cell: usize,
+    /// The width that the slide will have at the end of the duration.
     pub end_width: usize,
+    /// The animation played on the side when the a SlideWithExTapHead or SlideControlPointWithExTapHead is hit.
+    ///
+    /// - UP: Vertical effects from bottom to top.
+    /// - DW: Vertical effects from top to bottom.
+    /// - CE: Effects towards the playfield.
+    /// - LS: Horizontal effects from right to left.
+    /// - RS: Horizontal effects from left to right.
+    /// - LC: Effects rotate counter-clockwise.
+    /// - RC: Effects rotate clockwise.
+    ///
+    /// Should always be represented with `None` if it is a normal Slide or SlideControlPoint.
     pub animation: Option<String>,
 }
 
@@ -127,6 +143,7 @@ pub struct Flick {
     /// minimum value is 1, which means that the note only occupies the column
     /// specified.
     pub width: usize,
+    /// Always has a value of `L`. This is not the direction of the flick note, as they can be hit from either direction.
     pub unknown: String,
 }
 
@@ -145,6 +162,7 @@ pub struct Air {
     /// minimum value is 1, which means that the note only occupies the column
     /// specified.
     pub width: usize,
+    /// Which note the Air note "leeches" off of.
     pub target_note: String,
 }
 
