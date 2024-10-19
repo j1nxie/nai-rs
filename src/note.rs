@@ -424,7 +424,7 @@ impl FromStr for NoteType {
                 color: if let Some(t) = data.next() {
                     match t {
                         "GRY" | "RED" | "ORN" | "YEL" | "AQA" | "PPL" | "PNK" | "CYN" | "BLK"
-                        | "YEL" | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
+                        | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
                         _ => unreachable!(
                             "invalid color found while parsing air trace / air crush. bailing."
                         ),
@@ -448,7 +448,7 @@ impl FromStr for NoteType {
                 color: if let Some(t) = data.next() {
                     match t {
                         "GRY" | "RED" | "ORN" | "YEL" | "AQA" | "PPL" | "PNK" | "CYN" | "BLK"
-                        | "YEL" | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
+                        | "VLT" | "LIM" | "BLU" | "NON" | "DEF" => t.to_string(),
                         _ => unreachable!(
                             "invalid color found while parsing air trace / air crush. bailing."
                         ),
